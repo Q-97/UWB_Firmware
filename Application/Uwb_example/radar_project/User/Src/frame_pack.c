@@ -68,11 +68,3 @@ uint16_t frame_pack_serialize(uint8_t ant_id,
 
     return frame_len;
 }
-
-void frame_pack_send(const uint8_t *frame, uint16_t len)
-{
-    if ((NULL != frame) && (len > 0))
-    {
-        hal_uart_send_data(0, (uint8_t *)frame, len);   /* UART0 */
-    }
-}
