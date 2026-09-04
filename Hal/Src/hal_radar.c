@@ -28,6 +28,9 @@ double g_init_tmp = 0;
 uint8_t g_tx_power = 0;
 static uint8_t g_vaild_port_num = 1;
 
+extern volatile uint32_t ts_t1, ts_radar_start, ts_radar_irq;
+extern uint32_t s_timer1_cnt;
+
 uint16_t g_delta_time_ms = 2100;  
 void hal_radar_para_cfg_update(hal_uwb_instance_t * uwb_instance)
 {
@@ -91,6 +94,7 @@ void hal_radar_cfg(void)
 
 void hal_radar_start(void)
 {
+    ts_radar_start = hal_get_cur_sys_time();
     zn_to_radar_trx_state();
     g_radar_done_flag = 0;
     zn_radar_start();    
@@ -106,6 +110,8 @@ void hal_radar_stop(void)
 
 void hal_radar_timer_irq_proc(void)
 {
+    ts_t1 = hal_get_cur_sys_time();
+    s_timer1_cnt++;
     uint8_t seq = 0xff;
     if(zn_radar_driver_cfg.ant_type == FOUR_T_FOUR_R_MODE)
     {
@@ -143,6 +149,8 @@ void hal_radar_timer_init(void)
     }
     timer_cfg.time1 = time1;
     timer_cfg.func = (TIMER_CallbackType)&hal_radar_timer_irq_proc;
+
+    // printf("[TS] timer1 time1=%u us delta=%u ports=%u\r\n", time1, g_delta_time_ms, g_vaild_port_num);  //[TS]boot时打印一次
     
     hal_gp_timer_init(&timer_cfg);
     hal_gp_timer_start(TIMER1);
@@ -203,6 +211,7 @@ void hal_radar_init(hal_uwb_instance_t * uwb_instance)
 
 void RADAR_IRQHandler()
 {
+    ts_radar_irq = hal_get_cur_sys_time();
    zn_radar_isr();
     
 }
