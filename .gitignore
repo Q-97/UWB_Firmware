@@ -1,0 +1,36 @@
+# ===== IDE =====
+.idea/
+
+# ===== 第三方库与文档（不入库） =====
+CMSIS/
+FreeRtos/
+CmBacktrace/
+Doc/
+
+# ===== Keil MDK 用户级配置文件 =====
+*.uvguix.*
+*.uvoptx
+**/MDK-ARM/EventRecorderStub.scvd
+**/MDK-ARM/JLinkSettings.ini
+**/MDK-ARM/JLinkLog.txt
+
+# ===== Keil 编译产物 =====
+**/MDK-ARM/Objects/
+**/MDK-ARM/Bin/
+**/MDK-ARM/RTE/
+*.o
+*.d
+*.lib
+*.a
+*.axf
+*.elf
+*.bin
+*.hex
+*.map
+*.lnp
+*.htm
+*.dep
+*.iex
+
+# ===== 其它 =====
+*.exe
